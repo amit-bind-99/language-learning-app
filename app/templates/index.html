@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PolyglotAI - Learn any language naturally through AI conversation, visual recognition, and voice interaction. 100% free.">
+    <meta name="keywords" content="language learning, AI, free, voice, conversation, education">
+    <meta property="og:title" content="PolyglotAI - AI-Powered Language Learning">
+    <meta property="og:description" content="Learn any language naturally through AI conversation and voice interaction">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>PolyglotAI - AI Language Learning</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">🌍</div>
+            <h1 class="splash-title">PolyglotAI</h1>
+            <p class="splash-subtitle">AI-Powered Language Learning</p>
+            <div class="splash-loader">
+                <div class="splash-spinner"></div>
+            </div>
+            <p class="splash-hint">Press any key to start</p>
+        </div>
+    </div>
+
+    <div class="page-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    
+    <div class="container">
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">🌍</span>
+                <div class="logo-text">
+                    <h1>PolyglotAI</h1>
+                    <p>Learn any language with AI-powered assistance</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge">🎤 Voice</span>
+                <span class="badge">🖼️ Visual</span>
+                <span class="badge">💬 Chat</span>
+                <span class="badge badge-free">100% Free</span>
+            </div>
+        </header>
+
+        <div class="settings-panel glass-card">
+            <div class="form-group">
+                <label>Native Language</label>
+                <div class="searchable-select" id="nativeLangContainer">
+                    <input type="text" id="nativeLangInput" class="searchable-input" placeholder="Search language..." value="English" readonly onclick="toggleDropdown('nativeLang')">
+                    <div class="searchable-dropdown hidden" id="nativeLangDropdown">
+                        <input type="text" class="searchable-filter" placeholder="Type to filter..." oninput="filterLanguages('nativeLang', this.value)">
+                        <div class="searchable-options" id="nativeLangOptions"></div>
+                    </div>
+                    <input type="hidden" id="nativeLang" value="English">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Target Language</label>
+                <div class="searchable-select" id="targetLangContainer">
+                    <input type="text" id="targetLangInput" class="searchable-input" placeholder="Search language..." value="Spanish" readonly onclick="toggleDropdown('targetLang')">
+                    <div class="searchable-dropdown hidden" id="targetLangDropdown">
+                        <input type="text" class="searchable-filter" placeholder="Type to filter..." oninput="filterLanguages('targetLang', this.value)">
+                        <div class="searchable-options" id="targetLangOptions"></div>
+                    </div>
+                    <input type="hidden" id="targetLang" value="Spanish">
+                </div>
+            </div>
+
+            <div class="form-group toggle-group">
+                <label class="toggle-label">
+                    <input type="checkbox" id="includeExamples" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Examples</span>
+                </label>
+            </div>
+
+            <div class="form-group toggle-group">
+                <label class="toggle-label">
+                    <input type="checkbox" id="includeImages">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Images</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Demo Quick Actions -->
+        <div class="demo-actions">
+            <span class="demo-label">Quick Demo:</span>
+            <button class="demo-chip" onclick="demoWord('apple')">🍎 Apple</button>
+            <button class="demo-chip" onclick="demoWord('car')">🚗 Car</button>
+            <button class="demo-chip" onclick="demoWord('hello')">👋 Hello</button>
+            <button class="demo-chip" onclick="demoWord('restaurant')">🍽️ Restaurant</button>
+        </div>
+
+        <div class="learning-area">
+            <div class="input-card glass-card">
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <input type="text" id="wordInput" placeholder="Type a word or phrase to learn..." autocomplete="off">
+                        <button id="micBtn" class="mic-btn" onclick="toggleVoiceInput()" title="Click to speak">
+                            <span class="mic-icon">🎤</span>
+                        </button>
+                    </div>
+                    <button class="learn-btn" onclick="learnWord()">
+                        <span>Learn</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="voiceStatus" class="voice-status hidden">
+                    <div class="listening-indicator">
+                        <div class="sound-wave">
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                        <span class="listening-text">Listening... Speak now</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result" class="result-card hidden">
+                <!-- Results injected here -->
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card glass-card quiz-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Quick Quiz</h3>
+                    <p>Test your knowledge with AI-generated quizzes</p>
+                    <button onclick="generateQuiz()" class="feature-btn">
+                        Generate Quiz
+                    </button>
+                    <div id="quizContainer"></div>
+                </div>
+
+                <div class="feature-card glass-card history-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Recent Words</h3>
+                    <p>Your learning history</p>
+                    <ul id="historyList"></ul>
+                </div>
+
+                <div class="feature-card glass-card image-card">
+                    <div class="feature-icon">📷</div>
+                    <h3>Image Translator</h3>
+                    <p>Upload a photo to identify and learn objects</p>
+                    <div class="image-upload-area" id="imageUploadArea"
+                         ondragover="handleDragOver(event)" 
+                         ondragleave="handleDragLeave(event)"
+                         ondrop="handleDrop(event)"
+                         onclick="document.getElementById('imageInput').click()">
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📤</span>
+                            <span>Drag & drop or click to upload</span>
+                            <small>Supports: JPG, PNG, WEBP</small>
+                        </div>
+                        <input type="file" id="imageInput" class="hidden" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                    <div id="imageResult" class="image-result hidden"></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="app-footer">
+            <p>Built with ❤️ using FastAPI + Groq AI | 100% Free & Open Source</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span class="toast-icon"></span>
+        <span class="toast-message"></span>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
